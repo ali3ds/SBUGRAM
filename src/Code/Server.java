@@ -49,9 +49,12 @@ class ClientHandler extends Thread{
                         break;
                     case "test":
                         System.out.println("ss");
-
-
                         break;
+
+                    case "check_username":
+                        String username = dis.readUTF().trim();
+                        checkUsername(username);
+                       break;
 
                 }
 
@@ -64,6 +67,20 @@ class ClientHandler extends Thread{
             e.printStackTrace();
         }
     }
+
+    private void checkUsername(String username) throws IOException {
+        for(int i = 0;i<signeUpUsers.get();i++){
+            User u = Users_data.get(i);
+            if(u.getUsername().equals(username)){
+                dos.writeUTF("used");
+                dos.flush();
+                return;
+            }
+        }
+        dos.writeUTF("ok");
+        dos.flush();
+    }
+
 
     public void new_user(List<String> list){
         Users_data.put(signeUpUsers.get(),new User(list));

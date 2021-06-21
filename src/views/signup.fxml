@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="615.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.signup">
+<AnchorPane prefHeight="615.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.signup">
 <children>
     <Pane fx:id="signup_pane" layoutX="25.0" layoutY="73.0" prefHeight="470.0" prefWidth="450.0">
         <children>
             <VBox alignment="CENTER" layoutX="45.0" layoutY="22.0" prefHeight="426.0" prefWidth="360.0" spacing="30.0">
                 <children>
-                    <TextField id="txt_username_signup" fx:id="txt_username_signup" promptText="username" />
-                    <TextField id="txt_password_signup" fx:id="txt_password_signup" promptText="password" />
-                    <TextField id="txt_firstname" fx:id="txt_firstname" promptText="first name" />
-                    <TextField id="txt_lastname" fx:id="txt_lastname" promptText="last name" />
-                    <TextField id="txt_city" fx:id="txt_country" promptText="country" />
-                    <TextField id="txt_city" fx:id="txt_city" promptText="city" />
+                    <TextField id="txt_username_signup" fx:id="txt_username_signup" promptText="username">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
+                    <TextField id="txt_password_signup" fx:id="txt_password_signup" promptText="password">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
+                    <TextField id="txt_firstname" fx:id="txt_firstname" promptText="first name">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
+                    <TextField id="txt_lastname" fx:id="txt_lastname" promptText="last name">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
+                    <TextField id="txt_city" fx:id="txt_country" promptText="country">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
+                    <TextField id="txt_city" fx:id="txt_city" promptText="city">
+                     <font>
+                        <Font name="Ubuntu" size="13.0" />
+                     </font></TextField>
                     <HBox prefHeight="27.0" prefWidth="271.0" spacing="20.0">
                         <children>
 
@@ -28,7 +48,10 @@
                             <ComboBox fx:id="combo_day" prefWidth="150.0" promptText="day" />
                         </children>
                     </HBox>
-                    <Button fx:id="signup" mnemonicParsing="false" onAction="#signup_done" text="Sign up" />
+                    <Button fx:id="signup" mnemonicParsing="false" onAction="#signup_done" text="Sign up">
+                     <font>
+                        <Font name="Ubuntu Bold" size="13.0" />
+                     </font></Button>
                 </children>
                 <padding>
                     <Insets left="20.0" right="20.0" />

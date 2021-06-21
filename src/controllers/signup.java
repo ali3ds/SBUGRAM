@@ -41,6 +41,16 @@ public class signup extends Main implements Initializable {
     public ComboBox combo_day;
 
     public void signup_done(ActionEvent actionEvent) throws IOException {
+
+        dos.writeUTF("check_username");
+        dos.flush();
+        dos.writeUTF(txt_username_signup.getText());
+        dos.flush();
+
+       if(dis.readUTF().equals("ok")){
+
+       }
+
         List<String> list = new ArrayList<>();
         list.add(txt_username_signup.getText());
         list.add(txt_password_signup.getText());

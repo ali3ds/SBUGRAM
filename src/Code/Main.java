@@ -2,11 +2,13 @@ package Code;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import com.jfoenix.controls.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -17,6 +19,7 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main extends Application {
+
 
     public static ObjectInputStream dis;
     public static ObjectOutputStream dos;
@@ -38,7 +41,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("../views/login.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 615));
+        primaryStage.setScene(new Scene(root, 400, 700));
 
         primaryStage.show();
 
