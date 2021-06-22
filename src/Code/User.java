@@ -1,21 +1,24 @@
 package Code;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class User {
-    String id;
+    int id;
     String username;
     String password;
     String first_name;
     String last_name;
     String city;
     String country;
-    int phone;
+    int posts_count;
     String month;
     int day,year;
+    int post_count;
+    List<Integer> followings;
+    String avatar;
 
     public User(List<String> list){
+        followings=new ArrayList<Integer>();
         this.username=list.get(0);
         this.password=list.get(1);
         this.first_name=list.get(2);
@@ -27,11 +30,58 @@ public class User {
         this.year=Integer.parseInt(list.get(8));
     }
 
-    public String getId() {
+    public User(Map<String,String> data){
+        followings=new ArrayList<Integer>();
+        Set<String> set = data.keySet();
+        for(String s:set){
+            switch (s.trim()){
+                case "id":
+                    this.id=Integer.parseInt(data.get(s));
+                    break;
+                case "username":
+                    this.username=data.get(s);
+                    break;
+
+                case "password":
+                    this.password=data.get(s);
+                    break;
+                case "first":
+                    this.first_name=data.get(s);
+                    break;
+                case "last":
+                    this.last_name=data.get(s);
+                    break;
+                case "day":
+                    this.day=Integer.parseInt(data.get(s));
+                    break;
+                case "month":
+                    this.month=data.get(s);
+                    break;
+                case "year":
+                    this.year=Integer.parseInt(data.get(s));
+                    break;
+                case "Country":
+                    this.country=data.get(s);
+                    break;
+                case "city":
+                    this.city=data.get(s);
+                    break;
+                case "following":
+                    this.followings.add(Integer.parseInt(data.get(s)));
+                    break;
+                case "avatar":
+                    this.avatar=data.get(s);
+                    break;
+
+            }
+        }
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -83,14 +133,6 @@ public class User {
         this.country = country;
     }
 
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
     public int getDay() {
         return day;
     }
@@ -113,5 +155,25 @@ public class User {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", posts_count=" + posts_count +
+                ", month='" + month + '\'' +
+                ", day=" + day +
+                ", year=" + year +
+                ", post_count=" + post_count +
+                ", followings=" + followings +
+                ", avatar='" + avatar + '\'' +
+                '}';
     }
 }
