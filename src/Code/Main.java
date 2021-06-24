@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import com.jfoenix.controls.*;
 
@@ -39,9 +40,13 @@ public class Main extends Application {
 
         /////cline*****
 
+        primaryStage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
+
         Parent root = FXMLLoader.load(getClass().getResource("../views/login.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 400, 700));
+        primaryStage.setScene(new Scene(root, 400, 600));
+
+        primaryStage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
 
         primaryStage.show();
 

@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -48,6 +49,8 @@ public class login extends Main implements Initializable {
         String username = txt_username.getText();
         String password = txt_password.getText();
 
+
+
         dos.writeUTF("login");
         dos.flush();
         dos.writeUTF(username);
@@ -55,27 +58,27 @@ public class login extends Main implements Initializable {
         dos.writeUTF(password);
         dos.flush();
 
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../views/feed.fxml"));
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("Feed");
-            stage.setScene(new Scene(root, 400, 700));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         switch (dis.readUTF()){
             case "right":
+
+                Parent root = FXMLLoader.load(getClass().getResource("../views/feed.fxml"));
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initStyle(StageStyle.DECORATED);
+                stage.setTitle("Feed");
+                stage.setScene(new Scene(root, 400, 760));
+                stage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
+
+                stage.show();
+
+
                 Alert alert= new Alert(Alert.AlertType.INFORMATION,"Logged in successfully");
                 alert.show();
 
-
-
-                Stage s = (Stage)txt_password.getScene().getWindow();
-                s.close();
+               // Stage s = (Stage)txt_password.getScene().getWindow();
+                //s.close();
 
             break;
             case "wrong":
@@ -84,7 +87,6 @@ public class login extends Main implements Initializable {
         }
 
 
-        socket.close();
     }
 
     public void open_signup(ActionEvent actionEvent) {

@@ -15,7 +15,7 @@ public class User {
     int day,year;
     int post_count;
     List<Integer> followings;
-    String avatar;
+    String avatar_path;
 
     public User(List<String> list){
         followings=new ArrayList<Integer>();
@@ -28,6 +28,7 @@ public class User {
         this.day=Integer.parseInt(list.get(6));
         this.month=list.get(7);
         this.year=Integer.parseInt(list.get(8));
+        this.avatar_path=list.get(9);
     }
 
     public User(Map<String,String> data){
@@ -70,7 +71,7 @@ public class User {
                     this.followings.add(Integer.parseInt(data.get(s)));
                     break;
                 case "avatar":
-                    this.avatar=data.get(s);
+                    this.avatar_path=data.get(s);
                     break;
 
             }
@@ -173,7 +174,7 @@ public class User {
                 ", year=" + year +
                 ", post_count=" + post_count +
                 ", followings=" + followings +
-                ", avatar='" + avatar + '\'' +
+                ", avatar='" + avatar_path + '\'' +
                 '}';
     }
 }

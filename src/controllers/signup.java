@@ -7,14 +7,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -39,6 +47,11 @@ public class signup extends Main implements Initializable {
     public ComboBox combo_year;
     public ComboBox combo_month;
     public ComboBox combo_day;
+    public Circle img_avatar;
+    @FXML
+    public Button button_avatar;
+
+    public String avatar_path;
 
     public void signup_done(ActionEvent actionEvent) throws IOException {
 
@@ -61,6 +74,7 @@ public class signup extends Main implements Initializable {
         list.add(String.valueOf(combo_day.getValue()));
         list.add(String.valueOf(combo_month.getValue()));
         list.add(String.valueOf(combo_year.getValue()));
+        list.add(avatar_path);
 
 
 
@@ -78,8 +92,29 @@ public class signup extends Main implements Initializable {
 
     }
 
+    @FXML
+    void avatar_choose(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Avatar");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null) {
+            Image map = new Image("file:"+selectedFile.getAbsolutePath());
+            avatar_path="file:"+selectedFile.getAbsolutePath();
+            ImagePattern pattern = new ImagePattern(map);
+            //Setting the pattern
+            img_avatar.setFill(pattern);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        Image map = new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/user.png");
+        ImagePattern pattern = new ImagePattern(map);
+        //Setting the pattern
+        img_avatar.setFill(pattern);
+
 
         int count=2012;
 

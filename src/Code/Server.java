@@ -5,6 +5,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,6 +36,7 @@ class ClientHandler extends Thread{
 
     public void run() {
         Load_UserDatabase();
+        signeUpUsers.set(usersCount.get());
         try {
             while (true) {
                 String command = dis.readUTF();
@@ -48,7 +51,6 @@ class ClientHandler extends Thread{
                         String pass = dis.readUTF();
                         System.out.println("login request user:"+user+"    pass:"+pass);
                         login(user,pass);
-
                         break;
                     case "test":
                         System.out.println("ss");
@@ -58,6 +60,11 @@ class ClientHandler extends Thread{
                         String username = dis.readUTF().trim();
                         checkUsername(username);
                        break;
+
+                    case "feed":
+                        String s = dis.readUTF();
+                        send_feed(s);
+                        break;
 
                 }
 
@@ -69,6 +76,87 @@ class ClientHandler extends Thread{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send_feed(String user) throws IOException {
+
+        int user_id = Integer.parseInt(user);
+
+
+        File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
+       List<Integer> following_list = new ArrayList<Integer>();
+        Scanner scanner = new Scanner(followings);
+        while(scanner.hasNextLine()){
+            if(user_id==Integer.parseInt(scanner.next().trim())){
+                following_list.add(Integer.parseInt(scanner.next().trim()));
+            }else{scanner.next();}
+        }
+
+        System.out.println("following "+following_list.toString());
+        File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
+        scanner=new Scanner(database_posts);
+        int count = 0;
+        while (scanner.hasNextLine()){
+            int the_id = Integer.parseInt(scanner.next());
+            for(int i:following_list){
+                if(i==the_id){
+                    count++;
+                }
+            }
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+        }
+
+        dos.writeUTF(String.valueOf(count));
+        dos.flush();
+
+        scanner=new Scanner(database_posts);
+        while (scanner.hasNextLine()){
+            boolean found=false;
+            int the_id = Integer.parseInt(scanner.next());
+            for(int i:following_list){
+                if(i==the_id){
+                    String post_id="0";
+                    found=true;
+                    scanner.nextLine();
+                    if(scanner.next().trim().equals("id")){
+                        post_id=scanner.next();
+                        scanner.nextLine();
+                    }
+                    String img = scanner.nextLine();
+                    dos.writeUTF(img);dos.flush();
+                    String caption = scanner.nextLine();
+                    dos.writeUTF(caption);dos.flush();
+                    String date = scanner.next();
+                    dos.writeUTF(date);dos.flush();
+                    String time = scanner.next();
+                    dos.writeUTF(time);dos.flush();
+                    String the_user = Users_data.get(the_id).username;
+                    dos.writeUTF(the_user);dos.flush();
+                    String avatar = Users_data.get(the_id).avatar_path;
+                    dos.writeUTF(avatar);dos.flush();
+                    dos.writeUTF(post_id);dos.flush();
+
+                }
+            }
+            if(!found){
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+            }
+        }
+
+
+
+
+
+
+
     }
 
     private void checkUsername(String username) throws IOException {
@@ -85,11 +173,30 @@ class ClientHandler extends Thread{
     }
 
 
-    public void new_user(List<String> list){
-        Users_data.put(signeUpUsers.get(),new User(list));
-        System.out.println(list.get(0) + " registered");
+    public void new_user(List<String> list) throws IOException {
         signeUpUsers.incrementAndGet();
+        Users_data.put(signeUpUsers.get(),new User(list));
+        FileWriter fw = new FileWriter("/Users/alinour/IdeaProjects/SBU GRAM/data/database_users.txt",true);
+        BufferedWriter users_database = new BufferedWriter(fw);
+        String s =String.valueOf( signeUpUsers.get());
+        users_database.write("\n");
+        users_database.write('\n');
+        users_database.write(s);
+        users_database.write('\n'+"username "+Users_data.get(signeUpUsers.get()).username);
+        users_database.write('\n'+"password "+Users_data.get(signeUpUsers.get()).password);
+        users_database.write('\n'+"first "+Users_data.get(signeUpUsers.get()).first_name);
+        users_database.write('\n'+"last "+Users_data.get(signeUpUsers.get()).last_name);
+        users_database.write('\n'+"Country "+Users_data.get(signeUpUsers.get()).country);
+        users_database.write('\n'+"city "+Users_data.get(signeUpUsers.get()).city);
+        users_database.write('\n'+"year "+Users_data.get(signeUpUsers.get()).year);
+        users_database.write('\n'+"month "+Users_data.get(signeUpUsers.get()).month);
+        users_database.write('\n'+"day "+Users_data.get(signeUpUsers.get()).day);
+        users_database.write('\n'+"avatar "+Users_data.get(signeUpUsers.get()).avatar_path);
+        users_database.write('\n'+"following 0");
+        users_database.close();
+        System.out.println(list.get(0) + " registered");
         System.out.println("New user: "+Arrays.toString(list.toArray()));
+
     }
 
     public void login(String user,String pass) throws IOException {
@@ -99,6 +206,10 @@ class ClientHandler extends Thread{
             User u = Users_data.get(i);
             if(u.getUsername().equals(user) && u.getPassword().equals(pass)){
                 dos.writeUTF("right");
+                System.out.println("accepted "+u.id);
+                System.out.println(u.username+" just logged in");
+                dos.writeUTF(String.valueOf(u.id));
+                dos.flush();
                 return;
             }
         }
@@ -122,7 +233,7 @@ class ClientHandler extends Thread{
                     userdata.put(scanner.next(),scanner.next());
                 }
                 User usernew = new User(userdata);
-                System.out.println(usernew.toString());
+                //System.out.println(usernew.toString());
                 Users_data.put(userid,usernew);
             }
         } catch (FileNotFoundException e) {
