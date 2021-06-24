@@ -68,9 +68,12 @@ public class login extends Main implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initStyle(StageStyle.DECORATED);
                 stage.setTitle("Feed");
-                stage.setScene(new Scene(root, 400, 760));
                 stage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
 
+                Scene scene = new Scene(root, 400, 760);
+
+                stage.setScene(scene);
+                scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
                 stage.show();
 
 
@@ -96,7 +99,10 @@ public class login extends Main implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
             stage.setTitle("Sign Up");
-            stage.setScene(new Scene(root, 500, 615));
+            Scene scene = new Scene(root, 470, 615);
+
+            stage.setScene(scene);
+            scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

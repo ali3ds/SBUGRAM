@@ -108,6 +108,7 @@ class ClientHandler extends Thread{
             scanner.nextLine();
             scanner.nextLine();
             scanner.nextLine();
+            scanner.nextLine();
         }
 
         dos.writeUTF(String.valueOf(count));
@@ -140,9 +141,15 @@ class ClientHandler extends Thread{
                     dos.writeUTF(avatar);dos.flush();
                     dos.writeUTF(post_id);dos.flush();
 
+                    scanner.nextLine();
+                        String likes = scanner.nextLine();
+                        dos.writeUTF(likes);dos.flush();
+
+
                 }
             }
             if(!found){
+                scanner.nextLine();
                 scanner.nextLine();
                 scanner.nextLine();
                 scanner.nextLine();

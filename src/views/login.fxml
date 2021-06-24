@@ -26,13 +26,13 @@
                <font>
                   <Font name="Ubuntu" size="11.0" />
                </font></PasswordField>
-            <Button fx:id="open_signup" layoutX="179.0" layoutY="514.0" mnemonicParsing="false" onAction="#open_signup" text="Sign up">
+            <Button fx:id="open_signup" layoutX="179.0" layoutY="514.0" mnemonicParsing="false" onAction="#open_signup" text="Sign up" textFill="WHITE">
                <font>
                   <Font name="Ubuntu Bold" size="13.0" />
                </font></Button>
-            <Button id="button_login" fx:id="button_login" layoutX="182.0" layoutY="375.0" mnemonicParsing="false" onAction="#login" text="Login">
+            <Button id="button_login" fx:id="button_login" layoutX="182.0" layoutY="375.0" mnemonicParsing="false" onAction="#login" text="Login" textFill="WHITE">
                <font>
-                  <Font name="Ubuntu" size="13.0" />
+                  <Font name="Ubuntu Bold" size="13.0" />
                </font></Button>
             <Text fontSmoothingType="LCD" layoutX="144.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account?">
                <font>

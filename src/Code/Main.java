@@ -44,7 +44,11 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("../views/login.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 400, 600));
+
+        Scene scene = new Scene(root, 400, 600);
+
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
 
         primaryStage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
 

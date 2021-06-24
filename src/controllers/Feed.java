@@ -1,10 +1,14 @@
 package controllers;
 
 import Code.Main;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
+import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,21 +22,26 @@ import javafx.scene.text.*;
 
 import java.io.IOException;
 import java.net.URL;
+import javafx.util.Duration;
 import java.util.ResourceBundle;
 
 public class Feed extends Main implements Initializable {
 
     @FXML
-    public ImageView manu_button;
+    public ImageView menu_button;
     public Circle circle1;
     public Text txt_test;
     public GridPane post_grid;
     public VBox posts_box;
     int current_user_id;
+    public GridPane menu_slide;
+
+    boolean menu_is_opened=false;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             current_user_id = Integer.parseInt(dis.readUTF());
         } catch (IOException e) {
@@ -68,8 +77,10 @@ public class Feed extends Main implements Initializable {
                     String the_username = dis.readUTF();
                     String avatar_path = dis.readUTF();
                     int post_id = Integer.parseInt(dis.readUTF());
+                    String s_likes = dis.readUTF();
+                    String[] likes = s_likes.split("\\s+");
 
-                    add_post(the_username,avatar_path,img,caption,date,time,post_id);
+                    add_post(the_username,avatar_path,img,caption,date,time,post_id,likes);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -79,7 +90,7 @@ public class Feed extends Main implements Initializable {
 
     }
 
-    public void add_post(String username, String avatar,String img,String caption,String date, String time,int post_id){
+    public void add_post(String username, String avatar,String img,String caption,String date, String time,int post_id,String[] likes){
         GridPane grid = new GridPane();
         grid.setMaxHeight(Region.USE_COMPUTED_SIZE);
         grid.setMinHeight(Region.USE_COMPUTED_SIZE);
@@ -151,7 +162,7 @@ public class Feed extends Main implements Initializable {
         img_repost.setOpacity(0.7);
         img_comment.setOpacity(0.7);
 
-        Text txt_like = new Text("5");
+        Text txt_like = new Text(String.valueOf(likes.length-1));
         txt_like.setFont(Font.font("Ubuntu", FontWeight.LIGHT, 14));
         txt_like.setFontSmoothingType(FontSmoothingType.LCD);
         txt_like.setFill(Color.LIGHTCORAL);
@@ -228,6 +239,60 @@ public class Feed extends Main implements Initializable {
 
 
     public void like(int user_id,int post_id){
+    }
 
+    @FXML
+    void menu_click(MouseEvent event) {
+
+        if(!menu_is_opened){
+            Duration duration = Duration.millis(250);
+            //Create new translate transition
+            RotateTransition rotate = new RotateTransition(duration,menu_button);
+            //Move in X axis by +200
+            rotate.setByAngle(90);
+            //Go back to previous position after 2.5 seconds
+            rotate.setAutoReverse(true);
+            //Repeat animation twice
+            rotate.setCycleCount(1);
+            rotate.play();
+
+
+            //Create new translate transition
+            TranslateTransition trans = new TranslateTransition(duration,menu_slide);
+            //Move in X axis by +200
+            trans.setByY(400);
+            //Go back to previous position after 2.5 seconds
+            trans.setAutoReverse(true);
+            //Repeat animation twice
+            trans.setCycleCount(1);
+            trans.play();
+
+
+            menu_is_opened=true;
+        }else{
+            Duration duration = Duration.millis(250);
+            //Create new translate transition
+            RotateTransition rotate = new RotateTransition(duration,menu_button);
+            //Move in X axis by +200
+            rotate.setByAngle(-90);
+            //Go back to previous position after 2.5 seconds
+            rotate.setAutoReverse(true);
+            //Repeat animation twice
+            rotate.setCycleCount(1);
+            rotate.play();
+
+
+            //Create new translate transition
+            TranslateTransition trans = new TranslateTransition(duration,menu_slide);
+            //Move in X axis by +200
+            trans.setByY(-400);
+            //Go back to previous position after 2.5 seconds
+            trans.setAutoReverse(true);
+            //Repeat animation twice
+            trans.setCycleCount(1);
+            trans.play();
+
+            menu_is_opened=false;
+        }
     }
 }
