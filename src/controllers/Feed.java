@@ -5,18 +5,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.net.URL;
@@ -138,24 +136,61 @@ public class Feed extends Main implements Initializable {
 
         ImageView img_repost = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/repost.png");
         ImageView img_comment = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/comment.png");
-        img_like.setFitWidth(24);
+        img_like.setFitWidth(22);
         img_repost.setFitWidth(24);
-        img_comment.setFitWidth(30);
+        img_comment.setFitWidth(25);
         img_comment.setPreserveRatio(true);
         img_repost.setPreserveRatio(true);
         img_like.setPreserveRatio(true);
         img_comment.setFitHeight(0);
         img_like.setFitHeight(0);
+        img_like.setSmooth(true);
         img_repost.setFitHeight(0);
+
+        img_like.setOpacity(0.7);
+        img_repost.setOpacity(0.7);
+        img_comment.setOpacity(0.7);
+
+        Text txt_like = new Text("5");
+        txt_like.setFont(Font.font("Ubuntu", FontWeight.LIGHT, 14));
+        txt_like.setFontSmoothingType(FontSmoothingType.LCD);
+        txt_like.setFill(Color.LIGHTCORAL);
+
+        Text txt_repost = new Text("0");
+        txt_repost.setFont(Font.font("Ubuntu", FontWeight.LIGHT, 14));
+        txt_repost.setFontSmoothingType(FontSmoothingType.LCD);
+        txt_repost.setFill(Color.DARKGRAY);
+
+        Text txt_comment = new Text("12");
+        txt_comment.setFont(Font.font("Ubuntu", FontWeight.LIGHT, 14));
+        txt_comment.setFontSmoothingType(FontSmoothingType.LCD);
+        txt_comment.setFill(Color.DARKGRAY);
+
+        GridPane like_box = new GridPane();
+        like_box.add(img_like,0,0);
+        like_box.add(txt_like,1,0);
+        like_box.setHgap(5);
+
+        GridPane repost_box = new GridPane();
+        repost_box.add(img_repost,0,0);
+        repost_box.add(txt_repost,1,0);
+        repost_box.setHgap(5);
+
+        GridPane comment_box = new GridPane();
+        comment_box.add(img_comment,0,0);
+        comment_box.add(txt_comment,1,0);
+        comment_box.setHgap(5);
+
+
 
         GridPane pane_buttons = new GridPane();
         pane_buttons.setMinWidth(400);
         pane_buttons.setMaxWidth(400);
         pane_buttons.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        pane_buttons.add(img_like, 0, 0);
-        pane_buttons.add(img_repost, 1, 0);
-        pane_buttons.add(img_comment, 2, 0);
-        pane_buttons.setHgap(10);
+        pane_buttons.add(like_box, 0, 0);
+        pane_buttons.add(repost_box, 1, 0);
+        pane_buttons.add(comment_box, 2, 0);
+        pane_buttons.setHgap(13);
         pane_buttons.setPadding(new Insets(5, 5, 5, 10));
 
         img_like.setOnMouseClicked(new EventHandler<MouseEvent>() {
