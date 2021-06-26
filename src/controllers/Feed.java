@@ -36,6 +36,7 @@ import java.util.ResourceBundle;
 public class Feed extends Main implements Initializable {
 
     public static int current_user_id;
+    public static String profile_username;
 
     @FXML
     public ImageView menu_button;
@@ -228,7 +229,60 @@ public class Feed extends Main implements Initializable {
         pane_buttons.setPadding(new Insets(5, 5, 5, 10));
 
 
+        txt_username.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    dos.writeUTF("user_profile");dos.flush();
+                    dos.writeUTF(username);dos.flush();
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("../views/profile_user.fxml"));
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.DECORATED);
+                        stage.setTitle("Profile");
+                        Scene scene = new Scene(root, 400, 700);
 
+                        stage.setScene(scene);
+                        scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        circle_avatar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    dos.writeUTF("user_profile");dos.flush();
+                    dos.writeUTF(username);dos.flush();
+                     profile_username = username;
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("../views/profile_user.fxml"));
+                        Stage stage = new Stage();
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initStyle(StageStyle.DECORATED);
+                        stage.setTitle("Profile");
+                        Scene scene = new Scene(root, 400, 700);
+
+                        stage.setScene(scene);
+                        scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         grid.add(pane_buttons, 0, 3);
 
