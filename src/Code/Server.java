@@ -5,10 +5,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,6 +48,7 @@ class ClientHandler extends Thread{
                 switch (command.trim()){
                     case "signed_up":
                         System.out.println("User "+id+" Signed up");
+                        print_date();
                         List<String> list =(List<String>) dis.readObject();
                         new_user(list);
                         break;
@@ -53,6 +56,7 @@ class ClientHandler extends Thread{
                         String user = dis.readUTF();
                         String pass = dis.readUTF();
                         System.out.println("login request user:"+user+"    pass:"+pass);
+                        print_date();
                         login(user,pass);
                         break;
                     case "test":
@@ -97,16 +101,105 @@ class ClientHandler extends Thread{
                         send_feed_user(f);
                         break;
 
+                    case "reposted":
+                        String id = dis.readUTF();
+                        System.out.println(id+ " Just reposted a post by "+dis.readUTF());
+                        break;
+
+                    case "users_list":
+                        String current_id = dis.readUTF();
+                        dos.writeUTF(String.valueOf(Users_data.keySet().size()));dos.flush();
+                        for(int i:Users_data.keySet()){
+                            dos.writeUTF(String.valueOf(Users_data.get(i).id));dos.flush();
+                            dos.writeUTF(Users_data.get(i).username);dos.flush();
+                            dos.writeUTF(Users_data.get(i).avatar_path);dos.flush();
+                            File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
+                            Scanner scanner = new Scanner(followings);
+                            boolean is = false;
+                            while(scanner.hasNextLine()){
+                                String line = scanner.nextLine();
+                                if(line.contains(current_id+" "+Users_data.get(i).id)){
+                                    dos.writeUTF("yes");dos.flush();
+                                    is = true;
+                                    break;
+                                }
+                            }
+                            if(!is){
+                                dos.writeUTF("no");dos.flush();
+                            }
+
+                        }
+                        break;
+
+                    case "is_following":
+                        String id1 = dis.readUTF();
+                        String id2="0";
+                        String username2 = dis.readUTF();
+                        System.out.println("is following "+id1+" "+username2);
+                        for(int i:Users_data.keySet()){
+                            if(Users_data.get(i).username.contains(username2)){
+                                id2= String.valueOf(Users_data.get(i).id);
+                                break;
+                            }
+                        }
+                        break;
+
+                    case "follow":
+                        String id_1 = dis.readUTF();
+                        String id_2="0";
+                        String username_2 = dis.readUTF();
+                        for(int i:Users_data.keySet()){
+                            if(Users_data.get(i).username.contains(username_2)){
+                                id_2= String.valueOf(Users_data.get(i).id);
+                                break;
+                            }
+                        }
+
+
+                        boolean has_followed=false;
+                        File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
+                        Path path = Paths.get(followings.getPath());
+                        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+                        for(int i=0;i<lines.size();i++){
+                            if(lines.get(i).trim().equals(id_1+" "+id_2)){
+                                lines.remove(i);
+                                has_followed=true;
+                                System.out.println(id_1+" Just unfollowed "+id_2);
+                                print_date();
+                                break;
+                            }
+                        }
+
+                        if(!has_followed){
+                            lines.add(id_1+" "+id_2);
+                            System.out.println(id_1+" Just followed "+id_2);
+                            print_date();
+                        }
+                                Files.write(path, lines, StandardCharsets.UTF_8);
+                        Files.write(path, lines, Charset.forName("UTF-8"));
+
+
+                        break;
+
+
                 }
 
                 dos.flush();
             }
         } catch (IOException e) {
             System.out.println("client " + this.id + " disconnected");
+            print_date();
             this.usersCount.decrementAndGet();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void print_date() {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        System.out.println(formatter.format(date));
     }
 
     private void send_user_profile(String username) throws IOException{
@@ -115,7 +208,6 @@ class ClientHandler extends Thread{
         for(int i:Users_data.keySet()){
             if(Users_data.get(i).username.contains(username)){
                 id=String.valueOf(i);
-                System.out.println("test:"+Users_data.get(i).username+" "+i);
             }
         }
         User me = Users_data.get(Integer.parseInt(id));
@@ -163,11 +255,19 @@ class ClientHandler extends Thread{
         File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
         List<Integer> following_list = new ArrayList<Integer>();
         Scanner scanner = new Scanner(followings);
-        while(scanner.hasNextLine()){
-            if(user_id==Integer.parseInt(scanner.next().trim())){
-                following_list.add(Integer.parseInt(scanner.next().trim()));
-            }else{scanner.next();}
-        }
+
+
+            while(scanner.hasNextLine()){
+                try{
+                if(user_id==Integer.parseInt(scanner.next().trim())){
+                    following_list.add(Integer.parseInt(scanner.next().trim()));
+                }else{scanner.next();}
+                }catch (NoSuchElementException e){
+
+                }
+            }
+
+
 
         System.out.println("following "+following_list.toString());
         File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
@@ -318,7 +418,6 @@ class ClientHandler extends Thread{
         }
 
 
-
     }
 
     public void send_my_profile(String id) throws IOException{
@@ -370,11 +469,6 @@ class ClientHandler extends Thread{
         }
 
 
-        System.out.println("new post: ");
-        System.out.println(user_posting_id);
-        System.out.println(posts_count);
-        System.out.println(post_path);
-        System.out.println(desc);
 
         FileWriter ff = new FileWriter("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt",true);
         BufferedWriter posts_database = new BufferedWriter(ff);
@@ -396,6 +490,8 @@ class ClientHandler extends Thread{
         posts_database.close();
         ff.close();
 
+        System.out.println(user_posting_id+" published a post" + post_path);
+        print_date();
 
 
     }
@@ -429,6 +525,8 @@ class ClientHandler extends Thread{
                             }
                         }
                         hasliked=true;
+                        System.out.println(user_id+" Liked a post with id "+post_id);
+                        print_date();
                         break;
                     }
                 }
@@ -444,6 +542,8 @@ class ClientHandler extends Thread{
                             lines.set(i+4, like_line);
                             System.out.println("liked: "+like_line);
                             Files.write(path, lines, StandardCharsets.UTF_8);
+                            System.out.println(user_id+" Disliked a post with id "+post_id);
+                            print_date();
                             break;
                         }
                     }
@@ -453,6 +553,7 @@ class ClientHandler extends Thread{
             }
         }
         dos.writeUTF(like_line);dos.flush();
+
     }
 
 
@@ -467,9 +568,15 @@ class ClientHandler extends Thread{
        List<Integer> following_list = new ArrayList<Integer>();
         Scanner scanner = new Scanner(followings);
         while(scanner.hasNextLine()){
+            try{
+
+
             if(user_id==Integer.parseInt(scanner.next().trim())){
                 following_list.add(Integer.parseInt(scanner.next().trim()));
             }else{scanner.next();}
+
+            }catch (NoSuchElementException e){}
+
         }
 
         System.out.println("following "+following_list.toString());
@@ -539,8 +646,8 @@ class ClientHandler extends Thread{
         }
 
 
-
-
+System.out.println(user_id+" get posts list");
+    print_date();
 
 
 
@@ -584,6 +691,20 @@ class ClientHandler extends Thread{
         System.out.println(list.get(0) + " registered");
         System.out.println("New user: "+Arrays.toString(list.toArray()));
 
+
+
+        File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_users.txt");
+        Path path = Paths.get(followings.getPath());
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        Scanner scanner = new Scanner(followings);
+        scanner.next();
+        int count = Integer.parseInt(scanner.next());
+        count++;
+        lines.remove(0);
+        lines.add(0,"users_count "+count);
+
+        Files.write(path, lines, StandardCharsets.UTF_8);
+        Files.write(path, lines, Charset.forName("UTF-8"));
     }
 
     public void login(String user,String pass) throws IOException {
@@ -595,6 +716,7 @@ class ClientHandler extends Thread{
                 dos.writeUTF("right");
                 System.out.println("accepted "+u.id);
                 System.out.println(u.username+" just logged in");
+                print_date();
                 dos.writeUTF(String.valueOf(u.id));
                 dos.flush();
                 return;
@@ -617,7 +739,12 @@ class ClientHandler extends Thread{
                 Map<String,String> userdata = new HashMap<>();
                 userdata.put("id",String.valueOf(userid));
                 for(int i=1;i<=11;i++){
-                    userdata.put(scanner.next(),scanner.next());
+                    try{
+
+                        userdata.put(scanner.next(),scanner.next());
+                    }catch (NoSuchElementException e){
+
+                    }
                 }
                 User usernew = new User(userdata);
                 Users_data.put(userid,usernew);
@@ -646,6 +773,10 @@ public class Server implements Initializable {
             Socket clientSocket = serverSocket.accept();
             int id = usersCount.get();
             System.out.println("User "+usersCount+" Joined.");
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            System.out.println(formatter.format(date));
 
             new ClientHandler(clientSocket, id, data, usersCount).start();
             usersCount.incrementAndGet();

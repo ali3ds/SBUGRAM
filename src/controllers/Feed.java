@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,6 +57,9 @@ public class Feed extends Main implements Initializable {
     @FXML
     private ResourceBundle resources;
 
+    @FXML
+    public Text list_users;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -67,7 +71,6 @@ public class Feed extends Main implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(current_user_id);
         Rectangle clip = new Rectangle(100, 200);
 
 
@@ -196,7 +199,7 @@ public class Feed extends Main implements Initializable {
         txt_repost.setFontSmoothingType(FontSmoothingType.LCD);
         txt_repost.setFill(Color.DARKGRAY);
 
-        Text txt_comment = new Text("12");
+        Text txt_comment = new Text("0");
         txt_comment.setFont(Font.font("Ubuntu", FontWeight.LIGHT, 14));
         txt_comment.setFontSmoothingType(FontSmoothingType.LCD);
         txt_comment.setFill(Color.DARKGRAY);
@@ -208,8 +211,8 @@ public class Feed extends Main implements Initializable {
 
         GridPane repost_box = new GridPane();
         repost_box.add(img_repost,0,0);
-        repost_box.add(txt_repost,1,0);
         repost_box.setHgap(5);
+
 
         GridPane comment_box = new GridPane();
         comment_box.add(img_comment,0,0);
@@ -227,6 +230,7 @@ public class Feed extends Main implements Initializable {
         pane_buttons.add(comment_box, 2, 0);
         pane_buttons.setHgap(13);
         pane_buttons.setPadding(new Insets(5, 5, 5, 10));
+
 
 
         txt_username.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -316,9 +320,6 @@ public class Feed extends Main implements Initializable {
 
                     String[] likes2 = like_line.split("\\s+");
                     txt_like.setText(String.valueOf(likes2.length-1));
-                    System.out.println(like_line);
-                    System.out.println(Arrays.toString(likes2));
-                    System.out.println("ssss" + (likes2.length-1));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -329,6 +330,33 @@ public class Feed extends Main implements Initializable {
         posts_box.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
         posts_box.getChildren().add(grid);
+
+
+
+        repost_box.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    dos.writeUTF("new post");
+                    dos.flush();
+                    dos.writeUTF(String.valueOf(current_user_id));dos.flush();
+                    dos.writeUTF(img);dos.flush();
+                    dos.writeUTF(txt_desc.getText());dos.flush();
+
+
+                    Alert alert= new Alert(Alert.AlertType.INFORMATION,"reposted successfully");
+                    alert.show();
+
+                    dos.writeUTF("reposted");dos.flush();
+                    dos.writeUTF(String.valueOf(current_user_id));dos.flush();
+                    dos.writeUTF(username);dos.flush();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 
@@ -395,7 +423,6 @@ public class Feed extends Main implements Initializable {
     void refresh(MouseEvent event) {
         posts_box.getChildren().clear();
 
-        System.out.println(current_user_id);
         Rectangle clip = new Rectangle(100, 200);
 
 
@@ -435,7 +462,6 @@ public class Feed extends Main implements Initializable {
                 }
             }
         }
-        System.out.println("just refreshed");
 
     }
 
@@ -473,6 +499,32 @@ public class Feed extends Main implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void show_list(){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../views/users_list.fxml"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Users list");
+            Scene scene = new Scene(root, 300, 450);
+
+            stage.setScene(scene);
+            scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void logout(MouseEvent event) {
+
+        Stage s = (Stage)posts_box.getScene().getWindow();
+        s.close();
     }
 
 }

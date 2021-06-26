@@ -109,32 +109,32 @@
             <Font name="Ubuntu" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="txt_name1" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="68.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="posts" textAlignment="CENTER">
+      <Text fx:id="txt_name1" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="77.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="posts" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="txt_name11" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="160.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followers" textAlignment="CENTER">
+      <Text fx:id="txt_name11" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="169.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followers" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="txt_name111" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="267.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followings" textAlignment="CENTER">
+      <Text fx:id="txt_name111" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="276.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followings" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="txt_post" fontSmoothingType="LCD" layoutX="79.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER">
+      <Text fx:id="txt_post" fontSmoothingType="LCD" layoutX="88.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="21.0" />
          </font>
       </Text>
-      <Text fx:id="txt_followers" fontSmoothingType="LCD" layoutX="185.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" textAlignment="CENTER">
+      <Text fx:id="txt_followers" fontSmoothingType="LCD" layoutX="194.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="21.0" />
          </font>
       </Text>
-      <Text fx:id="txt_followings" fontSmoothingType="LCD" layoutX="291.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" textAlignment="CENTER">
+      <Text fx:id="txt_followings" fontSmoothingType="LCD" layoutX="300.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" textAlignment="CENTER">
          <font>
             <Font name="Ubuntu" size="21.0" />
          </font>

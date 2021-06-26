@@ -43,7 +43,7 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/87390.png"));
 
         Parent root = FXMLLoader.load(getClass().getResource("../views/login.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("SBUGram");
 
         Scene scene = new Scene(root, 400, 600);
 

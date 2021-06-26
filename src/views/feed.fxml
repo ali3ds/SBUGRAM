@@ -50,7 +50,7 @@
                   <DropShadow color="#00000064" height="14.0" radius="6.5" width="14.0" />
                </effect>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Direct messages" textAlignment="CENTER" GridPane.rowIndex="2">
+            <Text fx:id="list_users" onMouseClicked="#show_list" strokeType="OUTSIDE" strokeWidth="0.0" text="Users" textAlignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font name="Ubuntu Mono" size="18.0" />
                </font>
@@ -66,9 +66,9 @@
                   <DropShadow color="#00000064" height="14.0" radius="6.5" width="14.0" />
                </effect>
             </Text>
-            <Button mnemonicParsing="false" text="Log out" GridPane.rowIndex="4">
+            <Button mnemonicParsing="false" onMouseClicked="#logout" text="Log out" textFill="WHITE" GridPane.rowIndex="4">
                <font>
-                  <Font name="Ubuntu Mono" size="15.0" />
+                  <Font name="Ubuntu Mono Bold" size="15.0" />
                </font>
             </Button>
          </children>
