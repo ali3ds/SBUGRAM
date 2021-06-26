@@ -5,9 +5,11 @@ import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
@@ -22,10 +24,18 @@ import javafx.scene.text.*;
 
 import java.io.IOException;
 import java.net.URL;
+
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class Feed extends Main implements Initializable {
+
+    public static int current_user_id;
 
     @FXML
     public ImageView menu_button;
@@ -33,14 +43,22 @@ public class Feed extends Main implements Initializable {
     public Text txt_test;
     public GridPane post_grid;
     public VBox posts_box;
-    int current_user_id;
     public GridPane menu_slide;
 
     boolean menu_is_opened=false;
 
+    @FXML
+    private Text new_post_button;
+
+    @FXML
+    private URL location;
+    @FXML
+    private ResourceBundle resources;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        posts_box.getChildren().clear();
 
         try {
             current_user_id = Integer.parseInt(dis.readUTF());
@@ -143,7 +161,11 @@ public class Feed extends Main implements Initializable {
         pane2.setPadding(new Insets(5, 5, 5, 10));
         grid.add(pane2, 0, 2);
 
-        ImageView img_like = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/like.png");
+        ImageView img_like = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/liked.png");
+
+
+
+
 
         ImageView img_repost = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/repost.png");
         ImageView img_comment = new ImageView("file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/comment.png");
@@ -204,12 +226,7 @@ public class Feed extends Main implements Initializable {
         pane_buttons.setHgap(13);
         pane_buttons.setPadding(new Insets(5, 5, 5, 10));
 
-        img_like.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                like(current_user_id,post_id);
-            }
-        });
+
 
 
         grid.add(pane_buttons, 0, 3);
@@ -231,6 +248,28 @@ public class Feed extends Main implements Initializable {
         grid.add(pane_post_time,0,4);
 
 
+        img_like.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                txt_like.setText("a");
+                try {
+                    dos.writeUTF("like");dos.flush();
+                    dos.writeUTF(String.valueOf(current_user_id));dos.flush();
+                    dos.writeUTF(String.valueOf(post_id));dos.flush();
+
+                    String like_line = dis.readUTF();
+
+                    String[] likes2 = like_line.split("\\s+");
+                    txt_like.setText(String.valueOf(likes2.length-1));
+                    System.out.println(like_line);
+                    System.out.println(Arrays.toString(likes2));
+                    System.out.println("ssss" + (likes2.length-1));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         posts_box.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
@@ -239,6 +278,7 @@ public class Feed extends Main implements Initializable {
 
 
     public void like(int user_id,int post_id){
+
     }
 
     @FXML
@@ -295,4 +335,71 @@ public class Feed extends Main implements Initializable {
             menu_is_opened=false;
         }
     }
+
+    @FXML
+    void refresh(MouseEvent event) {
+        posts_box.getChildren().clear();
+
+        System.out.println(current_user_id);
+        Rectangle clip = new Rectangle(100, 200);
+
+
+        try {
+            dos.writeUTF("feed");
+            dos.flush();
+            dos.writeUTF(String.valueOf(current_user_id));
+            dos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int count = 0;
+        try {
+            count = Integer.parseInt(dis.readUTF());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(count>0){
+            for(int i=1;i<=count;i++){
+                try {
+                    String img = dis.readUTF();
+                    String caption = dis.readUTF();
+                    String date = dis.readUTF();
+                    String time = dis.readUTF();
+                    String the_username = dis.readUTF();
+                    String avatar_path = dis.readUTF();
+                    int post_id = Integer.parseInt(dis.readUTF());
+                    String s_likes = dis.readUTF();
+                    String[] likes = s_likes.split("\\s+");
+
+                    add_post(the_username,avatar_path,img,caption,date,time,post_id,likes);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("just refreshed");
+
+    }
+
+    @FXML
+    void open_new_post(MouseEvent event) throws IOException {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("../views/new_post.fxml"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("Make new post");
+            Scene scene = new Scene(root, 400, 700);
+
+            stage.setScene(scene);
+            scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

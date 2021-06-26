@@ -58,7 +58,7 @@
                   <DropShadow color="#00000064" height="14.0" radius="6.5" width="14.0" />
                </effect>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="New post" textAlignment="CENTER" GridPane.rowIndex="3">
+            <Text fx:id="new_post_button" onMouseClicked="#open_new_post" strokeType="OUTSIDE" strokeWidth="0.0" text="New post" textAlignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font name="Ubuntu Mono" size="18.0" />
                </font>
@@ -81,7 +81,12 @@
                        <Image url="file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/menu.png" />
                    </image>
                </ImageView>
-               <Pane prefWidth="250.0" />
+            <ImageView fx:id="refresh_button" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/icons/refersh.png" />
+               </image>
+            </ImageView>
+               <Pane prefWidth="225.0" />
                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="SBU gram" textAlignment="RIGHT">
                    <font>
                        <Font name="Ubuntu Light" size="16.0" />

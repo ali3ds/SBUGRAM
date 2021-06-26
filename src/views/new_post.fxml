@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NewPost">
+   <children>
+      <GridPane layoutX="16.0" layoutY="-3.0" prefHeight="706.0" prefWidth="369.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="330.0" minWidth="10.0" percentWidth="0.0" prefWidth="330.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" percentHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+          <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="252.0" minHeight="10.0" percentHeight="0.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="217.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="252.0" minHeight="10.0" prefHeight="217.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fx:id="img_post" fitWidth="330.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/posts/post6.jpg" />
+               </image>
+            </ImageView>
+            <Button fx:id="button_image" mnemonicParsing="false" onMouseClicked="#choose_image" text="Choose Image" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets top="20.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="Ubuntu Mono Bold" size="15.0" />
+               </font>
+            </Button>
+            <TextArea fx:id="txt_desc" prefHeight="200.0" prefWidth="200.0" promptText="Write your description..." style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <font>
+                  <Font name="Ubuntu Mono" size="15.0" />
+               </font>
+               <effect>
+                  <InnerShadow color="#6d8f645f" radius="16.8925" width="48.57" />
+               </effect>
+            </TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Ubuntu Mono Bold" size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets top="40.0" />
+               </GridPane.margin>
+            </Text>
+            <Button fx:id="button_post" mnemonicParsing="false" onMouseClicked="#post" text="Post" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Ubuntu Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

@@ -7,6 +7,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,6 +69,16 @@ class ClientHandler extends Thread{
                         send_feed(s);
                         break;
 
+                    case "like":
+                        String user_id = dis.readUTF();
+                        String post_id = dis.readUTF();
+                        like(user_id,post_id);
+                        break;
+
+                    case "new post":
+                        new_post();
+                        break;
+
                 }
 
                 dos.flush();
@@ -77,6 +90,107 @@ class ClientHandler extends Thread{
             e.printStackTrace();
         }
     }
+
+    public void new_post() throws IOException {
+        int user_posting_id = Integer.parseInt(dis.readUTF());
+        String post_path = dis.readUTF();
+        String desc= dis.readUTF();
+        File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
+        Scanner scanner = new Scanner(database_posts);
+        int posts_count=0;
+        while(scanner.hasNextLine()){
+            if(scanner.nextLine().contains("id")){
+                posts_count++;
+            }
+        }
+
+
+        System.out.println("new post: ");
+        System.out.println(user_posting_id);
+        System.out.println(posts_count);
+        System.out.println(post_path);
+        System.out.println(desc);
+
+        FileWriter ff = new FileWriter("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt",true);
+        BufferedWriter posts_database = new BufferedWriter(ff);
+        posts_database.write("\n");
+        posts_database.write('\n');
+        posts_database.write(String.valueOf(user_posting_id));
+        posts_database.write('\n');
+        posts_database.write("id "+String.valueOf(posts_count));
+        posts_database.write('\n');
+        posts_database.write(post_path);
+        posts_database.write('\n');
+        posts_database.write(desc);
+        posts_database.write('\n');
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        posts_database.write(formatter.format(date));
+        posts_database.write('\n');
+        posts_database.write("likes");
+        posts_database.close();
+        ff.close();
+
+
+
+    }
+
+    public void like(String user_id, String post_id) throws IOException {
+        String like_line = "";
+        File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
+        Scanner scanner=new Scanner(database_posts);
+        boolean hasliked = false;
+        while(scanner.hasNextLine()){
+            if(scanner.nextLine().contains("id "+post_id)){
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                String likes = scanner.nextLine();
+                String[] likes_array = likes.split("\\s+");
+                for(int i=0;i<likes_array.length;i++){
+                    if(likes_array[i].equals(user_id)){
+                        Path path = Paths.get(database_posts.getPath());
+                        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+                        for(int j=0;j<lines.size();j++){
+                            String s = lines.get(j);
+                            if(s.contains("id "+post_id)){
+                                 like_line = lines.get(j+4);
+                                int index = like_line.indexOf(user_id);
+                                like_line=like_line.substring(0,index-1)+like_line.substring(index+1,like_line.length());
+                                lines.set(j+4, like_line);
+                                System.out.println("disliked: "+like_line);
+                                Files.write(path, lines, StandardCharsets.UTF_8);
+                                break;
+                            }
+                        }
+                        hasliked=true;
+                        break;
+                    }
+                }
+
+                if(!hasliked){
+                    Path path = Paths.get(database_posts.getPath());
+                    List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+                    for(int i=0;i<lines.size();i++){
+                        String s = lines.get(i);
+                        if(s.contains("id "+post_id)){
+                            like_line = lines.get(i+4);
+                            like_line=like_line+" "+user_id;
+                            lines.set(i+4, like_line);
+                            System.out.println("liked: "+like_line);
+                            Files.write(path, lines, StandardCharsets.UTF_8);
+                            break;
+                        }
+                    }
+                }
+
+                break;
+            }
+        }
+        dos.writeUTF(like_line);dos.flush();
+    }
+
+
 
     public void send_feed(String user) throws IOException {
 
@@ -234,6 +348,7 @@ class ClientHandler extends Thread{
                     break; }
             while(scanner.hasNextLine()){
                 int userid = Integer.parseInt(scanner.next());
+                System.out.println("test: "+userid);
                 Map<String,String> userdata = new HashMap<>();
                 userdata.put("id",String.valueOf(userid));
                 for(int i=1;i<=11;i++){
