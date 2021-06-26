@@ -79,6 +79,15 @@ class ClientHandler extends Thread{
                         new_post();
                         break;
 
+                    case "my_profile":
+                        send_my_profile(dis.readUTF());
+                        break;
+
+                    case "feed_profile":
+                        String j = dis.readUTF();
+                        send_feed_profile(j);
+                        break;
+
                 }
 
                 dos.flush();
@@ -89,6 +98,124 @@ class ClientHandler extends Thread{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send_feed_profile(String user) throws IOException{
+        int user_id = Integer.parseInt(user);
+
+
+
+        File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
+        List<Integer> following_list = new ArrayList<Integer>();
+        Scanner scanner = new Scanner(followings);
+        while(scanner.hasNextLine()){
+            if(user_id==Integer.parseInt(scanner.next().trim())){
+                following_list.add(Integer.parseInt(scanner.next().trim()));
+            }else{scanner.next();}
+        }
+
+        System.out.println("following "+following_list.toString());
+        File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
+        scanner=new Scanner(database_posts);
+        int count = 0;
+        while (scanner.hasNextLine()){
+            int the_id = Integer.parseInt(scanner.next());
+
+                if(user_id==the_id){
+                    count++;
+                }
+
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+            scanner.nextLine();
+        }
+
+        dos.writeUTF(String.valueOf(count));
+        dos.flush();
+
+        scanner=new Scanner(database_posts);
+        while (scanner.hasNextLine()){
+            boolean found=false;
+            int the_id = Integer.parseInt(scanner.next());
+                if(user_id==the_id){
+                    String post_id="0";
+                    found=true;
+                    scanner.nextLine();
+                    if(scanner.next().trim().equals("id")){
+                        post_id=scanner.next();
+                        scanner.nextLine();
+                    }
+                    String img = scanner.nextLine();
+                    dos.writeUTF(img);dos.flush();
+                    String caption = scanner.nextLine();
+                    dos.writeUTF(caption);dos.flush();
+                    String date = scanner.next();
+                    dos.writeUTF(date);dos.flush();
+                    String time = scanner.next();
+                    dos.writeUTF(time);dos.flush();
+                    String the_user = Users_data.get(the_id).username;
+                    dos.writeUTF(the_user);dos.flush();
+                    String avatar = Users_data.get(the_id).avatar_path;
+                    dos.writeUTF(avatar);dos.flush();
+                    dos.writeUTF(post_id);dos.flush();
+
+                    scanner.nextLine();
+                    String likes = scanner.nextLine();
+                    dos.writeUTF(likes);dos.flush();
+
+
+                }
+
+            if(!found){
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+                scanner.nextLine();
+            }
+        }
+
+
+
+    }
+
+    public void send_my_profile(String id) throws IOException{
+        Load_UserDatabase();
+        User me = Users_data.get(Integer.parseInt(id));
+        dos.writeUTF(me.username);dos.flush();
+        dos.writeUTF(me.first_name);dos.flush();
+        dos.writeUTF(me.last_name);dos.flush();
+        dos.writeUTF(me.avatar_path);dos.flush();
+
+        File database_posts = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/database_posts.txt");
+        Scanner scanner = new Scanner(database_posts);
+        int posts_count=0;
+        while(scanner.hasNextLine()){
+            if(scanner.nextLine().trim().equals(id)){
+                posts_count++;
+            }
+        }
+
+        dos.writeUTF(String.valueOf(posts_count));dos.flush();
+
+        File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");
+         scanner = new Scanner(followings);
+         int followings_count=0;
+         int followers_count=0;
+         while(scanner.hasNextLine()){
+             String line = scanner.nextLine();
+             String[] line_array = line.split("\\s+");
+             if(line_array[0].equals(id))followings_count++;
+             if(line_array[1].equals(id))followers_count++;
+
+         }
+        dos.writeUTF(String.valueOf(followings_count));dos.flush();
+        dos.writeUTF(String.valueOf(followers_count));dos.flush();
+
     }
 
     public void new_post() throws IOException {
@@ -195,6 +322,7 @@ class ClientHandler extends Thread{
     public void send_feed(String user) throws IOException {
 
         int user_id = Integer.parseInt(user);
+
 
 
         File followings = new File("/Users/alinour/IdeaProjects/SBU GRAM/data/followings.txt");

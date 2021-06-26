@@ -13,12 +13,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="700.0" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Feed">
+<AnchorPane minHeight="700.0" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Profile">
    <children>
-       <ScrollPane fx:id="feed_scroll" hbarPolicy="NEVER" layoutY="60.0" maxHeight="700.0" minHeight="700.0" prefWidth="400.0" vbarPolicy="ALWAYS">
+       <ScrollPane fx:id="feed_scroll" hbarPolicy="NEVER" layoutY="300.0" maxHeight="400.0" minHeight="400.0" prefWidth="400.0" vbarPolicy="ALWAYS">
            <content>
                <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefWidth="400.0">
                    <children>
@@ -42,7 +43,7 @@
             <DropShadow color="#00000036" height="26.75" offsetY="6.0" radius="12.9525" width="27.06" />
          </effect>
          <children>
-            <Text onMouseClicked="#open_profile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" textAlignment="CENTER" GridPane.rowIndex="1">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" textAlignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font name="Ubuntu Mono" size="26.0" />
                </font>
@@ -76,9 +77,9 @@
 
        <ToolBar prefHeight="40.0" prefWidth="400.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0">
            <items>
-               <ImageView fx:id="menu_button" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#menu_click" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="back_button" fitHeight="30.0" fitWidth="20.0" onMouseClicked="#back_click" pickOnBounds="true" preserveRatio="true">
                    <image>
-                       <Image url="file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/menu.png" />
+                       <Image url="@../../pics/back.png" />
                    </image>
                </ImageView>
             <ImageView fx:id="refresh_button" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#refresh" pickOnBounds="true" preserveRatio="true">
@@ -97,6 +98,47 @@
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
            </padding>
        </ToolBar>
+      <Circle fx:id="avatar_circle" fill="WHITE" layoutX="78.0" layoutY="126.0" radius="45.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text fx:id="txt_username" fontSmoothingType="LCD" layoutX="148.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username">
+         <font>
+            <Font name="Ubuntu" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_name" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="149.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Lastname">
+         <font>
+            <Font name="Ubuntu" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_name1" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="68.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="posts" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_name11" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="160.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followers" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_name111" fill="#5b5b5b" fontSmoothingType="LCD" layoutX="267.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="followings" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_post" fontSmoothingType="LCD" layoutX="79.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_followers" fontSmoothingType="LCD" layoutX="185.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="txt_followings" fontSmoothingType="LCD" layoutX="291.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" textAlignment="CENTER">
+         <font>
+            <Font name="Ubuntu" size="21.0" />
+         </font>
+      </Text>
 
 
 

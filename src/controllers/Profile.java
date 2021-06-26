@@ -1,87 +1,130 @@
 package controllers;
 
 import Code.Main;
-import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.effect.ColorAdjust;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontSmoothingType;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
-
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class Feed extends Main implements Initializable {
+public class Profile extends Main implements Initializable {
 
-    public static int current_user_id;
+    int profile_id=0;
 
     @FXML
-    public ImageView menu_button;
-    public Circle circle1;
-    public Text txt_test;
-    public GridPane post_grid;
-    public VBox posts_box;
-    public GridPane menu_slide;
+    private ScrollPane feed_scroll;
 
-    boolean menu_is_opened=false;
+    @FXML
+    private VBox posts_box;
+
+    @FXML
+    private GridPane menu_slide;
 
     @FXML
     private Text new_post_button;
 
     @FXML
-    private URL location;
-    @FXML
-    private ResourceBundle resources;
+    private ImageView back_button;
 
+    @FXML
+    private ImageView refresh_button;
+
+    @FXML
+    private Circle avatar_circle;
+
+    @FXML
+    private Text txt_username;
+
+    @FXML
+    private Text txt_name;
+
+    @FXML
+    private Text txt_name1;
+
+    @FXML
+    private Text txt_name11;
+
+    @FXML
+    private Text txt_name111;
+
+    @FXML
+    private Text txt_post;
+
+    @FXML
+    private Text txt_followers;
+
+    @FXML
+    private Text txt_followings;
+
+    @FXML
+    void back_click(MouseEvent event) {
+
+    }
+
+    @FXML
+    void open_new_post(MouseEvent event) {
+
+    }
+
+    @FXML
+    void refresh(MouseEvent event) {
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        posts_box.getChildren().clear();
-
         try {
-            current_user_id = Integer.parseInt(dis.readUTF());
+            dos.writeUTF("my_profile");dos.flush();
+            dos.writeUTF(String.valueOf(Feed.current_user_id));dos.flush();
+
+            txt_username.setText(dis.readUTF());
+            txt_name.setText(dis.readUTF()+" "+dis.readUTF());
+            avatar_circle.setFill(new ImagePattern(new Image(dis.readUTF())));
+            txt_post.setText(dis.readUTF());
+            txt_followings.setText(dis.readUTF());
+            txt_followers.setText(dis.readUTF());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(current_user_id);
+
+        posts_box.getChildren().clear();
+
         Rectangle clip = new Rectangle(100, 200);
 
 
         try {
-            dos.writeUTF("feed");
+            dos.writeUTF("feed_profile");
             dos.flush();
-            dos.writeUTF(String.valueOf(current_user_id));
+            dos.writeUTF(String.valueOf(Feed.current_user_id));
             dos.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    int count = 0;
+        int count = 0;
         try {
-             count = Integer.parseInt(dis.readUTF());
+            count = Integer.parseInt(dis.readUTF());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,7 +149,6 @@ public class Feed extends Main implements Initializable {
                 }
             }
         }
-
     }
 
     public void add_post(String username, String avatar,String img,String caption,String date, String time,int post_id,String[] likes){
@@ -255,7 +297,7 @@ public class Feed extends Main implements Initializable {
                 txt_like.setText("a");
                 try {
                     dos.writeUTF("like");dos.flush();
-                    dos.writeUTF(String.valueOf(current_user_id));dos.flush();
+                    dos.writeUTF(String.valueOf(Feed.current_user_id));dos.flush();
                     dos.writeUTF(String.valueOf(post_id));dos.flush();
 
                     String like_line = dis.readUTF();
@@ -276,149 +318,4 @@ public class Feed extends Main implements Initializable {
 
         posts_box.getChildren().add(grid);
     }
-
-
-    public void like(int user_id,int post_id){
-
-    }
-
-    @FXML
-    void menu_click(MouseEvent event) {
-
-        if(!menu_is_opened){
-            Duration duration = Duration.millis(250);
-            //Create new translate transition
-            RotateTransition rotate = new RotateTransition(duration,menu_button);
-            //Move in X axis by +200
-            rotate.setByAngle(90);
-            //Go back to previous position after 2.5 seconds
-            rotate.setAutoReverse(true);
-            //Repeat animation twice
-            rotate.setCycleCount(1);
-            rotate.play();
-
-
-            //Create new translate transition
-            TranslateTransition trans = new TranslateTransition(duration,menu_slide);
-            //Move in X axis by +200
-            trans.setByY(400);
-            //Go back to previous position after 2.5 seconds
-            trans.setAutoReverse(true);
-            //Repeat animation twice
-            trans.setCycleCount(1);
-            trans.play();
-
-
-            menu_is_opened=true;
-        }else{
-            Duration duration = Duration.millis(250);
-            //Create new translate transition
-            RotateTransition rotate = new RotateTransition(duration,menu_button);
-            //Move in X axis by +200
-            rotate.setByAngle(-90);
-            //Go back to previous position after 2.5 seconds
-            rotate.setAutoReverse(true);
-            //Repeat animation twice
-            rotate.setCycleCount(1);
-            rotate.play();
-
-
-            //Create new translate transition
-            TranslateTransition trans = new TranslateTransition(duration,menu_slide);
-            //Move in X axis by +200
-            trans.setByY(-400);
-            //Go back to previous position after 2.5 seconds
-            trans.setAutoReverse(true);
-            //Repeat animation twice
-            trans.setCycleCount(1);
-            trans.play();
-
-            menu_is_opened=false;
-        }
-    }
-
-    @FXML
-    void refresh(MouseEvent event) {
-        posts_box.getChildren().clear();
-
-        System.out.println(current_user_id);
-        Rectangle clip = new Rectangle(100, 200);
-
-
-        try {
-            dos.writeUTF("feed");
-            dos.flush();
-            dos.writeUTF(String.valueOf(current_user_id));
-            dos.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        int count = 0;
-        try {
-            count = Integer.parseInt(dis.readUTF());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(count>0){
-            for(int i=1;i<=count;i++){
-                try {
-                    String img = dis.readUTF();
-                    String caption = dis.readUTF();
-                    String date = dis.readUTF();
-                    String time = dis.readUTF();
-                    String the_username = dis.readUTF();
-                    String avatar_path = dis.readUTF();
-                    int post_id = Integer.parseInt(dis.readUTF());
-                    String s_likes = dis.readUTF();
-                    String[] likes = s_likes.split("\\s+");
-
-                    add_post(the_username,avatar_path,img,caption,date,time,post_id,likes);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("just refreshed");
-
-    }
-
-    @FXML
-    void open_new_post(MouseEvent event) throws IOException {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../views/new_post.fxml"));
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("Make new post");
-            Scene scene = new Scene(root, 400, 700);
-
-            stage.setScene(scene);
-            scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    void open_profile(MouseEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../views/profile.fxml"));
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setTitle("Profile");
-            Scene scene = new Scene(root, 400, 700);
-
-            stage.setScene(scene);
-            scene.getStylesheets().add("file:/Users/alinour/IdeaProjects/SBU%20GRAM/style/style.css");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
