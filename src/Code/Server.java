@@ -35,7 +35,7 @@ class ClientHandler extends Thread{
                 socket .getOutputStream());
         this.Users_data = Users_data;
 
-        this.usersCount = usersCount;
+        this.usersCount = new AtomicInteger(usersCount.get());
 
     }
 
@@ -347,9 +347,12 @@ class ClientHandler extends Thread{
         List<Integer> following_list = new ArrayList<Integer>();
         Scanner scanner = new Scanner(followings);
         while(scanner.hasNextLine()){
+            try{
+
             if(user_id==Integer.parseInt(scanner.next().trim())){
                 following_list.add(Integer.parseInt(scanner.next().trim()));
             }else{scanner.next();}
+            }catch (NoSuchElementException e){break;}
         }
 
         System.out.println("following "+following_list.toString());
@@ -685,8 +688,8 @@ System.out.println(user_id+" get posts list");
         users_database.write('\n'+"year "+Users_data.get(signeUpUsers.get()).year);
         users_database.write('\n'+"month "+Users_data.get(signeUpUsers.get()).month);
         users_database.write('\n'+"day "+Users_data.get(signeUpUsers.get()).day);
-        users_database.write('\n'+"avatar "+Users_data.get(signeUpUsers.get()).avatar_path);
         users_database.write('\n'+"following 0");
+        users_database.write('\n'+"avatar "+Users_data.get(signeUpUsers.get()).avatar_path);
         users_database.close();
         System.out.println(list.get(0) + " registered");
         System.out.println("New user: "+Arrays.toString(list.toArray()));
@@ -705,12 +708,14 @@ System.out.println(user_id+" get posts list");
 
         Files.write(path, lines, StandardCharsets.UTF_8);
         Files.write(path, lines, Charset.forName("UTF-8"));
+
+        Load_UserDatabase();
     }
 
     public void login(String user,String pass) throws IOException {
 
 
-        for(int i = 0;i<signeUpUsers.get();i++){
+        for(int i = 0;i<=usersCount.get();i++){
             User u = Users_data.get(i);
             if(u.getUsername().equals(user) && u.getPassword().equals(pass)){
                 dos.writeUTF("right");
@@ -735,7 +740,11 @@ System.out.println(user_id+" get posts list");
                     usersCount.set(Integer.parseInt(scanner.next()));
                     break; }
             while(scanner.hasNextLine()){
-                int userid = Integer.parseInt(scanner.next());
+                int userid=0;
+                try{
+
+                     userid = Integer.parseInt(scanner.next());
+                }catch (NoSuchElementException e){break;}
                 Map<String,String> userdata = new HashMap<>();
                 userdata.put("id",String.valueOf(userid));
                 for(int i=1;i<=11;i++){
@@ -760,26 +769,26 @@ System.out.println(user_id+" get posts list");
 public class Server implements Initializable {
     public static int port;
     public static AtomicInteger usersCount;
+    public static AtomicInteger usersCount0;
     public static final Map<Integer,User> data = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws Exception {
         //port = Integer.parseInt(args[0]);
         port=8080;
         //data = new ConcurrentHashMap<>();
-        usersCount = new AtomicInteger(0);
+        usersCount0 = new AtomicInteger(0);
 
         ServerSocket serverSocket = new ServerSocket(port);
         while (true) {
             Socket clientSocket = serverSocket.accept();
-            int id = usersCount.get();
-            System.out.println("User "+usersCount+" Joined.");
+            int id = usersCount0.get();
+            System.out.println("User "+usersCount0+" Joined.");
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
             System.out.println(formatter.format(date));
-
-            new ClientHandler(clientSocket, id, data, usersCount).start();
-            usersCount.incrementAndGet();
+            new ClientHandler(clientSocket, id, data, usersCount0).start();
+            usersCount0.incrementAndGet();
 
         }
     }

@@ -1,0 +1,153 @@
+.menu {
+
+    -fx-background-color: white;
+    -fx-background-radius: 30px;
+
+    -fx-border-radius: 30px;
+    -fx-border-width: 5px;
+    -fx-border-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 25, 0, 0, 10);
+}
+.txt_shadow{
+    -fx-border-width: 5px;
+    -fx-border-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 25, 0, 0, 10);
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * Text, Text field & Text area                                                *
+ *                                                                             *
+ ******************************************************************************/
+.text {
+	-fx-font-smoothing-type: gray;
+}
+
+.text-area, .text-field {
+	-fx-background-color: transparent;
+	-fx-background-radius: 2.0;
+	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
+	-fx-border-color: DarkSeaGreen;
+	-fx-border-width: 0 0 2 0;
+	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+}
+
+.text-area .text, .text-field>*>.text {
+	-fx-effect: null;
+	-fx-fill: -dark;
+}
+
+.text-area {
+	-fx-padding: 0.15em;
+}
+
+.text-area .content {
+	-fx-padding: 0.7em;
+	-fx-border-width: 0.0;
+	-fx-background-color: white;
+}
+
+.text-area:focused  .content {
+	-fx-background-color: white;
+}
+
+.text-area:focused, .text-field:focused {
+	-fx-border-color: DarkGreen;
+}
+
+.button {
+	-fx-background-color: linear-gradient(to right,DarkSlateGray, DarkSeaGreen);
+     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 13, 0, 0, 4);
+        
+}
+
+.button:hover, .button:default:focused {
+	-fx-background-color:  linear-gradient(to right,DarkSlateGray, OliveDrab);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 16, 0, 0, 7);
+
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ComboBox                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.combo-box .list-cell {
+	-fx-padding: 0.7em 0.7em 0.7em 0em;
+}
+
+.popup-overlay {
+	-fx-background-color: white;
+	-fx-border-color: DarkGreen;
+	-fx-border-width: 0 0 2 0;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+}
+
+.title-bar {
+	-fx-padding: 10;
+}
+
+.title-bar .icon {
+	-fx-alignment: center-left;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2), 0.0, 0.0, 0.0,
+		1.0);
+}
+
+.title-bar .title-label {
+	-fx-padding: 0 10 0 10;
+	-fx-alignment: center;
+	-fx-font-size: 36;
+	-fx-font-weight: bolder;
+}
+
+.content-area {
+	-fx-background-color: -dark;
+}
+
+.content-background {
+	-fx-background-color: white;
+	-fx-background-radius: 0.0 0.0 11.0 11.0;
+	-fx-padding: 0 10 10 10;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * ComboBox, ChoiceBox COMMON                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.combo-box-base, .choice-box {
+	-fx-background-color: transparent;
+	-fx-border-color:DarkGreen;
+	-fx-border-width: 0 0 2 0;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+}
+
+.combo-box:focused, .choice-box:focused {
+	-fx-border-color: black;
+}
+
+.combo-box-base>.label, .choice-box>.label {
+	-fx-padding: 5px 5px 5px 5px;
+}
+
+.combo-box-base>.arrow-button, .choice-box>.open-button {
+	-fx-padding: 5px 5px 5px 5px;
+	-fx-background-radius: 0.0 2.0 2.0 0.0;
+}
+
+.combo-box-base>.arrow-button>.arrow, .choice-box>.open-button>.arrow {
+	-fx-background-color: grey;
+}
+
+.combo-box-base .arrow-button:hover .arrow, .spinner .increment-arrow-button:hover .increment-arrow,
+	.spinner .decrement-arrow-button:hover .decrement-arrow {
+	-fx-background-color: grey;
+}
+
+.menu-item:focused {
+	-fx-background-color: grey;
+}

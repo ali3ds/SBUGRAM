@@ -1,0 +1,105 @@
+users_count 7
+
+0
+username ali 
+password 123 
+first Ali 
+last Nour 
+city Tehran 
+country Iran 
+month June 
+day 21 
+year 2001 
+followings 1 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar0.jpg
+
+1
+username jason 
+password jason098 
+first Jason 
+last Mumua 
+city Tehran 
+country Iran 
+month April 
+day 12 
+year 1996 
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar1.jpg
+
+2
+username SiskoArt 
+password sisksisk 
+first Sisko 
+last Baba 
+city NewYork 
+country UnitedStates
+month April
+day 12 
+year 1983
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar2.jpg
+
+3
+username Browski 
+password bro00 
+first Browski 
+last Goodarzi 
+city Beirut 
+country Lebanon 
+month April 
+day 12 
+year 1983 
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar3.jpg
+
+4
+username James 
+password james00 
+first James 
+last Goodarzi 
+city Beirut 
+country Lebanon 
+month April 
+day 12 
+year 1983 
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar4.jpg
+
+5
+username Albert 
+password albert00 
+first Albert 
+last Rezaee 
+city Sidney 
+country UnitedKingdom 
+month April 
+day 12 
+year 1983
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar5.jpg
+
+6
+username Soosano 
+password soosano00 
+first Soosano 
+last Asqari 
+city Kabol 
+country Palestine 
+month April 
+day 12 
+year 1983 
+followings 0 
+avatar file:/Users/alinour/IdeaProjects/SBU%20GRAM/pics/avatar/avatar6.jpg
+
+7
+username new_user
+password 123
+first Ali
+last Nour
+Country Iran
+city Tehran
+year 2006
+month February
+day 9
+following 0
+avatar file:/Users/alinour/Desktop/2.HM_.Image2MIN.png
